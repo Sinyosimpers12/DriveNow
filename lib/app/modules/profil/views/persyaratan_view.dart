@@ -2,6 +2,7 @@ import 'package:drive_now/app/modules/profil/controllers/profil_controller.dart'
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import google_fonts
 
 class PersyaratanView extends StatelessWidget {
   const PersyaratanView({super.key});
@@ -11,17 +12,21 @@ class PersyaratanView extends StatelessWidget {
     final ProfilController controller = Get.put(ProfilController());
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Persyaratan',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
+          style: GoogleFonts.poppins( // Apply Poppins font
+            color: Colors.white
           ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Get.back(),
+          color: Colors.white,
         ),
         elevation: 0,
         backgroundColor: Color(0xFF707FDD),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -29,18 +34,18 @@ class PersyaratanView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'Upload Foto SIM',
-                style: TextStyle(
+                style: GoogleFonts.poppins( // Apply Poppins font
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF707FDD),
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 'Pastikan foto SIM terlihat jelas dan tidak buram',
-                style: TextStyle(
+                style: GoogleFonts.poppins( // Apply Poppins font
                   fontSize: 14,
                   color: Colors.grey,
                 ),
@@ -78,9 +83,9 @@ class PersyaratanView extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                                 const SizedBox(height: 10),
-                                const Text(
+                                Text(
                                   'Belum ada foto SIM',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins( // Apply Poppins font
                                     color: Colors.grey,
                                     fontSize: 16,
                                   ),
@@ -107,18 +112,18 @@ class PersyaratanView extends StatelessWidget {
                                   color: Colors.grey[300],
                                   borderRadius: BorderRadius.circular(15),
                                 ),
-                                child: const Column(
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.error_outline,
                                       color: Colors.red,
                                       size: 50,
                                     ),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                     Text(
                                       'Gagal memuat gambar',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         color: Colors.red,
                                         fontSize: 16,
                                       ),
@@ -137,12 +142,12 @@ class PersyaratanView extends StatelessWidget {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () => controller.changeSimImage(ImageSource.camera),
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text(
+                    icon: const Icon(Icons.camera_alt, color: Colors.white,),
+                    label: Text(
                       'Kamera',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -160,12 +165,12 @@ class PersyaratanView extends StatelessWidget {
                   const SizedBox(width: 20),
                   ElevatedButton.icon(
                     onPressed: () => controller.changeSimImage(ImageSource.gallery),
-                    icon: const Icon(Icons.photo_library),
-                    label: const Text(
+                    icon: const Icon(Icons.photo_library, color: Colors.white,),
+                    label: Text(
                       'Galeri',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                     ),
                     style: ElevatedButton.styleFrom(

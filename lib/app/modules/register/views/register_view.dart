@@ -1,7 +1,7 @@
 import 'package:drive_now/app/modules/login/views/login_view.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import google_fonts
 
 import '../controllers/register_controller.dart';
 
@@ -27,7 +27,7 @@ class RegisterView extends GetView<RegisterController> {
                   children: [
                     Text(
                       'Login',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -36,7 +36,7 @@ class RegisterView extends GetView<RegisterController> {
                     SizedBox(height: 8),
                     Text(
                       'Anda harus berusia minimal 17 tahun untuk registrasi',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 16,
                         color: Colors.white70,
                       ),
@@ -55,6 +55,7 @@ class RegisterView extends GetView<RegisterController> {
                     controller: controller.nameController,
                     decoration: InputDecoration(
                       labelText: 'Nama Lengkap',
+                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF707FDD)),
@@ -66,6 +67,7 @@ class RegisterView extends GetView<RegisterController> {
                     controller: controller.emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
+                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF707FDD)),
@@ -77,6 +79,7 @@ class RegisterView extends GetView<RegisterController> {
                     controller: controller.phoneController,
                     decoration: InputDecoration(
                       labelText: 'No. HP',
+                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF707FDD)),
@@ -88,6 +91,7 @@ class RegisterView extends GetView<RegisterController> {
                     controller: controller.passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF707FDD)),
@@ -100,6 +104,7 @@ class RegisterView extends GetView<RegisterController> {
                     controller: controller.confirmPasswordController,
                     decoration: InputDecoration(
                       labelText: 'Konfirmasi Password',
+                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF707FDD)),
@@ -116,7 +121,14 @@ class RegisterView extends GetView<RegisterController> {
                             borderRadius: BorderRadius.circular(10)
                         )
                     ),
-                    child: Center(child: Text('Masuk', style: TextStyle(color: Colors.white),)),
+                    child: Center(
+                      child: Text(
+                        'Masuk',
+                        style: GoogleFonts.poppins( // Apply Poppins font
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 16),
                   Row(
@@ -124,7 +136,10 @@ class RegisterView extends GetView<RegisterController> {
                       Expanded(child: Divider()),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text('Atau lanjut dengan:'),
+                        child: Text(
+                          'Atau lanjut dengan:',
+                          style: GoogleFonts.poppins(), // Apply Poppins font
+                        ),
                       ),
                       Expanded(child: Divider()),
                     ],
@@ -138,10 +153,13 @@ class RegisterView extends GetView<RegisterController> {
                       child: Text.rich(
                         TextSpan(
                           text: 'Sudah punya akun? ',
+                          style: GoogleFonts.poppins(), // Apply Poppins font
                           children: [
                             TextSpan(
                               text: 'Masuk',
-                              style: TextStyle(color: Colors.blue),
+                              style: GoogleFonts.poppins( // Apply Poppins font
+                                color: Colors.blue,
+                              ),
                             ),
                           ],
                         ),

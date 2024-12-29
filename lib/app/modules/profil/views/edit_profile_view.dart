@@ -1,10 +1,11 @@
 import 'package:drive_now/app/modules/profil/controllers/profil_controller.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import google_fonts
 
 class EditProfileView extends GetView<ProfilController> {
   const EditProfileView({super.key});
+
   @override
   Widget build(BuildContext context) {
     Get.put(ProfilController());
@@ -18,7 +19,9 @@ class EditProfileView extends GetView<ProfilController> {
         ),
         title: Text(
           'Edit Profil',
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.poppins( // Apply Poppins font
+            color: Colors.white,
+          ),
         ),
         elevation: 0,
       ),
@@ -31,10 +34,10 @@ class EditProfileView extends GetView<ProfilController> {
               CircleAvatar(
                 radius: 60,
                 backgroundImage: (controller.homeController.userData.value?.photoUrl != null &&
-                controller.homeController.userData.value!.photoUrl.isNotEmpty)
-                  ? NetworkImage(controller.homeController.userData.value!.photoUrl)
-                  : const AssetImage('assets/icons/user_default.png'),
-                    ),
+                        controller.homeController.userData.value!.photoUrl.isNotEmpty)
+                    ? NetworkImage(controller.homeController.userData.value!.photoUrl)
+                    : const AssetImage('assets/icons/user_default.png'),
+              ),
               SizedBox(height: 40),
               _buildTextField(
                 label: 'Nama Lengkap',
@@ -70,7 +73,7 @@ class EditProfileView extends GetView<ProfilController> {
                   ),
                   child: Text(
                     'Simpan',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins( // Apply Poppins font
                       fontSize: 16,
                       color: Colors.white,
                     ),
@@ -97,35 +100,34 @@ class EditProfileView extends GetView<ProfilController> {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: GoogleFonts.poppins( // Apply Poppins font
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color :readOnly ? Colors.black.withOpacity(0.25): Colors.black
+            color: readOnly ? Colors.black.withOpacity(0.25) : Colors.black,
           ),
         ),
         SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color:Color(0xFFEEEEEE), // Darker shade for read-only field
+            color: Color(0xFFEEEEEE), // Darker shade for read-only field
             borderRadius: BorderRadius.circular(8),
           ),
           child: TextField(
             controller: controller,
             keyboardType: keyboardType,
             readOnly: readOnly, // Set readOnly property to true for email
-            style: TextStyle(
-              color: readOnly ? Colors.black.withOpacity(0.25): Colors.black, // Text color remains black
+            style: GoogleFonts.poppins( // Apply Poppins font to text field
+              color: readOnly ? Colors.black.withOpacity(0.25) : Colors.black,
             ),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               border: InputBorder.none,
               hintText: readOnly ? 'Email tidak dapat diedit' : '', // Optional hint when read-only
-              hintStyle: TextStyle(color: readOnly ? Colors.black.withOpacity(0.5):  Colors.grey), // Optional hint text style
+              hintStyle: TextStyle(color: readOnly ? Colors.black.withOpacity(0.5) : Colors.grey), // Optional hint text style
             ),
           ),
         ),
       ],
     );
   }
-
 }

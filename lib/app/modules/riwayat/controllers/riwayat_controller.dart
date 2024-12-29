@@ -47,7 +47,7 @@ class RiwayatController extends GetxController {
       case 'Menunggu Konfirmasi':
         return Colors.blue;
       case 'Berlangsung':
-        return Colors.red;
+        return Color(0xFFFFA500);
       case 'Selesai':
         return Colors.green;
       default:
@@ -55,29 +55,33 @@ class RiwayatController extends GetxController {
     }
   }
 
-  void fetchUserOrders() async {
+  void fetchUserOrders() {
     final user = FirebaseAuth.instance.currentUser;
     final uid = user?.uid;
 
     if (uid != null) {
-      try {
-        DatabaseEvent event = await databaseRef.orderByChild('dataUser/uid').equalTo(uid).once();
+      // Listener untuk mendeteksi perubahan secara real-time
+      databaseRef.orderByChild('dataUser/uid').equalTo(uid).onValue.listen((event) {
         final data = event.snapshot.value;
 
         if (data != null) {
           Map<String, dynamic> ordersData = Map<String, dynamic>.from(data as Map);
 
+          // Kosongkan list sebelum diisi ulang
+          userOrders.clear();
+
           ordersData.forEach((key, value) {
             userOrders.add(Map<String, dynamic>.from(value));
           });
 
-          sortOrdersByDate();
+          sortOrdersByDate(); // Sort ulang setiap ada perubahan
         }
-      } catch (e) {
-        print('Error fetching orders: $e');
-      }
+      }, onError: (error) {
+        print('Error fetching orders in real-time: $error');
+      });
     }
   }
+
 
   void sortOrdersByDate() {
     userOrders.sort((a, b) {
@@ -116,6 +120,30 @@ class RiwayatController extends GetxController {
         filteredOrders.value = userOrders;
     }
   }
+
+  Future<void> batalkanPesanan(String idPesanan) async {
+    try {
+      await FirebaseDatabase.instance.ref('pesanan/$idPesanan').update({
+        'statusPemesanan': 'Dibatalkan',
+      });
+      Get.snackbar(
+        'Berhasil',
+        'Pesanan berhasil dibatalkan.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Gagal',
+        'Terjadi kesalahan saat membatalkan pesanan.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+}
+
 
   Future<void> selectDateRange(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(

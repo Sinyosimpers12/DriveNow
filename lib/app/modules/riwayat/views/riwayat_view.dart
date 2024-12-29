@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../controllers/riwayat_controller.dart';
 
 class RiwayatView extends GetView<RiwayatController> {
@@ -10,7 +11,10 @@ class RiwayatView extends GetView<RiwayatController> {
     Get.put(RiwayatController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Riwayat', style: TextStyle(color: Colors.white)),
+        title: Text(
+          'Riwayat',
+          style: GoogleFonts.poppins(color: Colors.white),
+        ),
         backgroundColor: Color(0xFF707FDD),
         centerTitle: true,
       ),
@@ -40,7 +44,10 @@ class RiwayatView extends GetView<RiwayatController> {
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: GoogleFonts.poppins(),
+                        ),
                       );
                     }).toList(),
                   );
@@ -62,7 +69,12 @@ class RiwayatView extends GetView<RiwayatController> {
           Expanded(
             child: Obx(() {
               if (controller.filteredOrders.isEmpty) {
-                return const Center(child: Text("Belum ada riwayat pesanan"));
+                return Center(
+                  child: Text(
+                    "Belum ada riwayat pesanan",
+                    style: GoogleFonts.poppins(),
+                  ),
+                );
               }
               return ListView.builder(
                 padding: const EdgeInsets.all(16),
@@ -83,63 +95,70 @@ class RiwayatView extends GetView<RiwayatController> {
                     },
                     child: Card(
                       margin: const EdgeInsets.only(bottom: 16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Pesanan: ${order['idPesanan'] ?? 'Tidak Ada ID'}',
-                                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Pesanan: ${order['idPesanan'] ?? 'Tidak Ada ID'}',
+                                      style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey),
+                                    ),
+                                    Text(
+                                      bookingDate,
+                                      style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      vehicleName,
+                                      style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Rp. $price',
+                                      style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
                                 ),
                                 Text(
-                                  bookingDate,
-                                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                  vehicleType,
+                                  style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  vehicleName,
-                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'Rp. $price',
-                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16), // Add padding for spacing
+                            decoration: BoxDecoration(
+                              color: controller.getStatusColor(status).withOpacity(0.1), // Background color with some opacity
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(12), // Rounded bottom-left corner
+                                bottomRight: Radius.circular(12), // Rounded bottom-right corner
+                              ),
                             ),
-                            Text(
-                              vehicleType,
-                              style: const TextStyle(fontSize: 14, color: Colors.grey),
+                            child: Text(
+                              status,
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: controller.getStatusColor(status), // Ensure text color matches the status
+                              ),
+
                             ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Rp $price',
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  status,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: controller.getStatusColor(status),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                          )
+                        ],
+                      )
+                      
                     ),
                   );
                 },

@@ -134,6 +134,34 @@ class LoginController extends GetxController {
     }
   }
 
+  /// Forgot Password Function
+  Future<void> forgotPassword(String email) async {
+    if (email.isEmpty) {
+      Get.snackbar('Error', 'Email tidak boleh kosong.');
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      Get.snackbar('Email Terkirim', 'Link reset password telah dikirim ke $email');
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+
+      if (e.code == 'invalid-email') {
+        errorMessage = 'Format email tidak valid.';
+      } else if (e.code == 'user-not-found') {
+        errorMessage = 'Pengguna dengan email ini tidak ditemukan.';
+      } else {
+        errorMessage = 'Terjadi kesalahan saat mengirim email reset password.';
+      }
+
+      Get.snackbar('Error', errorMessage);
+    } catch (e) {
+      Get.snackbar('Error', 'Terjadi kesalahan: $e');
+    }
+  }
+
+
   Future<void> _saveUserDataToRealtimeDatabase(User user, String photoUrl) async {
     DatabaseReference userRef = dbRef.child(user.uid);
     await userRef.set({

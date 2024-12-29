@@ -1,6 +1,7 @@
 import 'package:drive_now/app/modules/riwayat/controllers/riwayat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import google_fonts
 
 class DetailPesananView extends StatelessWidget {
   @override
@@ -27,9 +28,9 @@ class DetailPesananView extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Detail Pesanan',
-              style: TextStyle(
+              style: GoogleFonts.poppins( // Apply Poppins font
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -37,7 +38,7 @@ class DetailPesananView extends StatelessWidget {
             ),
             Text(
               'No. Pesanan: $noPesanan',
-              style: const TextStyle(
+              style: GoogleFonts.poppins( // Apply Poppins font
                 color: Colors.white,
                 fontSize: 12,
               ),
@@ -53,14 +54,13 @@ class DetailPesananView extends StatelessWidget {
           children: [
             // Status Pesanan
             Container(
-              color: const Color(0xFFF3F4F6),
+              color: controller.getStatusColor(pesananStatus).withOpacity(0.1),
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: Text(
                 pesananStatus,
-                style: const TextStyle(
-                  color: Color(0xFF707FDD),
+                style: GoogleFonts.poppins( // Apply Poppins font
+                  color: controller.getStatusColor(pesananStatus),
                   fontWeight: FontWeight.w500,
-                  
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -85,14 +85,14 @@ class DetailPesananView extends StatelessWidget {
                           children: [
                             Text(
                               motorData['name']!,
-                              style: const TextStyle(
+                              style: GoogleFonts.poppins( // Apply Poppins font
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               motorData['model']!,
-                              style: const TextStyle(
+                              style: GoogleFonts.poppins( // Apply Poppins font
                                 color: Colors.grey,
                               ),
                             ),
@@ -102,26 +102,34 @@ class DetailPesananView extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const Row(
-                    children: [
-                      Icon(Icons.check_circle, color: Colors.green),
-                      SizedBox(width: 8),
-                      Text('Bisa Refund'),
-                    ],
-                  ),
-                  const Row(
-                    children: [
-                      Icon(Icons.cancel, color: Colors.red),
-                      SizedBox(width: 8),
-                      Text('Tidak bisa reschedule'),
-                    ],
-                  ),
+                  if (pesananStatus == 'Menunggu Konfirmasi')
+                    Row(
+                      children: [
+                        Icon(Icons.check_circle, color: Colors.green),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Bisa Refund',
+                          style: GoogleFonts.poppins(), // Apply Poppins font
+                        ),
+                      ],
+                    ),
+                  if (pesananStatus == 'Menunggu Konfirmasi')
+                    Row(
+                      children: [
+                        Icon(Icons.cancel, color: Colors.red),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Tidak bisa reschedule',
+                          style: GoogleFonts.poppins(), // Apply Poppins font
+                        ),
+                      ],
+                    ),
                   const SizedBox(height: 24),
                   
                   // Data Penyewa
-                  const Text(
+                  Text(
                     'Data Penyewa',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins( // Apply Poppins font
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -135,9 +143,14 @@ class DetailPesananView extends StatelessWidget {
                         children: [
                           Text(
                             penyewaData['name']!,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: GoogleFonts.poppins( // Apply Poppins font
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          Text('${penyewaData['email']} • ${penyewaData['noHp']}'),
+                          Text(
+                            '${penyewaData['email']} • ${penyewaData['noHp']}',
+                            style: GoogleFonts.poppins(), // Apply Poppins font
+                          ),
                         ],
                       ),
                     ),
@@ -151,7 +164,7 @@ class DetailPesananView extends StatelessWidget {
                   const SizedBox(height: 16),
                   
                   // Durasi Sewa
-                  _buildDurationSection(controller.formatTanggalDetail(waktuPengambilan) , controller.formatTanggalDetail(waktuPengembalian) ),
+                  _buildDurationSection(controller.formatTanggalDetail(waktuPengambilan), controller.formatTanggalDetail(waktuPengembalian)),
                 ],
               ),
             ),
@@ -163,39 +176,49 @@ class DetailPesananView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                // Fungsi untuk menghubungi kantor sewa
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF707FDD),
-                minimumSize: const Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Hubungi Kantor Sewa',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
             const SizedBox(height: 8),
-            OutlinedButton(
-              onPressed: () {
-                // Fungsi untuk membatalkan pesanan
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Colors.red),
-                minimumSize: const Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            const SizedBox(height: 8),
+              if (pesananStatus == 'Menunggu Konfirmasi') // Logika untuk menampilkan tombol hanya jika status sesuai
+                OutlinedButton(
+                  onPressed: () async {
+                    bool confirm = await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Konfirmasi Pembatalan'),
+                        content: const Text('Apakah Anda yakin ingin membatalkan pesanan ini?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: const Text('Tidak'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: const Text('Ya'),
+                          ),
+                        ],
+                      ),
+                    );
+
+                    if (confirm) {
+                      await controller.batalkanPesanan(order['idPesanan']);
+                      Get.back(); // Kembali ke halaman sebelumnya setelah pembatalan
+                    }
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.red),
+                    minimumSize: const Size(double.infinity, 48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text(
+                    'Batalkan Pesanan',
+                    style: GoogleFonts.poppins( // Apply Poppins font
+                      color: Colors.red,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
-              ),
-              child: const Text(
-                'Batalkan Pesanan',
-                style: TextStyle(color: Colors.red, fontSize: 16),
-              ),
-            ),
           ],
         ),
       ),
@@ -211,7 +234,9 @@ class DetailPesananView extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins( // Apply Poppins font
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const Text(
               ' *',
@@ -220,7 +245,7 @@ class DetailPesananView extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        Text(location),
+        Text(location, style: GoogleFonts.poppins()), // Apply Poppins font
         const SizedBox(height: 16),
       ],
     );
@@ -231,15 +256,17 @@ class DetailPesananView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
             Text(
               'Durasi Sewa',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins( // Apply Poppins font
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Text(
               ' *',
-              style: TextStyle(color: Colors.red),
+              style: GoogleFonts.poppins(color: Colors.red),
             ),
           ],
         ),
@@ -250,10 +277,10 @@ class DetailPesananView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Pengambilan:'),
+                  Text('Pengambilan:',style: GoogleFonts.poppins()),
                   Text(
                     waktuPengambilan,
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: GoogleFonts.poppins(color: Colors.grey[600]),
                   ),
                 ],
               ),
@@ -262,10 +289,10 @@ class DetailPesananView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Pengembalian:'),
+                  Text('Pengembalian:', style: GoogleFonts.poppins(),),
                   Text(
                     waktuPengembalian,
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: GoogleFonts.poppins(color: Colors.grey[600]),
                   ),
                 ],
               ),

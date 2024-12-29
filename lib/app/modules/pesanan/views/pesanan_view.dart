@@ -2,6 +2,7 @@ import 'package:drive_now/app/data/kendaraan_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/pesanan_controller.dart';
 
@@ -18,7 +19,7 @@ class PesananView extends GetView<PesananController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF707FDD),
-        title: const Text('Sewa Motor', style: TextStyle(color: Colors.white)),
+        title: Text('Sewa Motor', style: GoogleFonts.poppins(color: Colors.white)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
@@ -46,30 +47,30 @@ class PesananView extends GetView<PesananController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(vehicle.name,
-                      style: const TextStyle(
+                      style: GoogleFonts.poppins(
                           fontSize: 24, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
-                  Text(vehicle.brand, style: const TextStyle(color: Colors.grey)),
-                  Text(vehicle.cc, style: const TextStyle(color: Colors.grey)),
+                  Text(vehicle.brand, style: GoogleFonts.poppins(color: Colors.grey)),
+                  Text(vehicle.cc, style: GoogleFonts.poppins(color: Colors.grey)),
                   const SizedBox(height: 16),
 
-                  const Text('Pilih Harga',
-                      style: TextStyle(
+                  Text('Pilih Harga',
+                      style: GoogleFonts.poppins(
                           fontSize: 18, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   Obx(() => DropdownButton<String>(
                         value: controller.selectedPriceOption.value.isNotEmpty
                             ? controller.selectedPriceOption.value
                             : null,
-                        hint: const Text("Pilih Durasi"),
+                        hint: Text("Pilih Durasi", style: GoogleFonts.poppins(),),
                         items: [
                           DropdownMenuItem(
                             value: vehicle.price2,
-                            child: Text("Per 12 Jam: Rp.${vehicle.price2}"),
+                            child: Text("Per 12 Jam: Rp.${vehicle.price2}", style: GoogleFonts.poppins(),),
                           ),
                           DropdownMenuItem(
                             value: vehicle.price,
-                            child: Text("Per Hari: Rp.${vehicle.price}"),
+                            child: Text("Per Hari: Rp.${vehicle.price}", style: GoogleFonts.poppins(),),
                           ),
                         ],
                         onChanged: (value) {
@@ -85,8 +86,8 @@ class PesananView extends GetView<PesananController> {
 
                   const SizedBox(height: 16),
 
-                  const Text('Fitur',
-                      style: TextStyle(
+                  Text('Fitur',
+                      style: GoogleFonts.poppins(
                           fontSize: 18, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
 
@@ -143,7 +144,7 @@ class PesananView extends GetView<PesananController> {
             Flexible(
               child: Obx(() => Text(
                     "Total Harga: Rp.${controller.price}",
-                    style: const TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -161,9 +162,9 @@ class PesananView extends GetView<PesananController> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 12),
                 ),
-                child: const Text(
+                child: Text(
                   'Lanjut',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
                 ),
               ),
             ),
@@ -214,12 +215,12 @@ class PesananView extends GetView<PesananController> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontSize: 16),
+                    style: GoogleFonts.poppins(fontSize: 16),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     description,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
                   ),
                 ],
               ),
@@ -246,7 +247,7 @@ class PesananView extends GetView<PesananController> {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.indigo.shade100,
+          color: count > 0 ? Colors.indigo.shade400 : Colors.indigo.shade100,
           width: 2,
         ),
         borderRadius: BorderRadius.circular(12),
@@ -256,7 +257,7 @@ class PesananView extends GetView<PesananController> {
         children: [
           CircleAvatar(
             radius: 24,
-            backgroundColor: Colors.indigo.shade100,
+            backgroundColor: count > 0 ? Colors.indigo.shade400 : Colors.indigo.shade100,
             child: Image.asset(
               imagePath,
               width: 28,
@@ -271,12 +272,12 @@ class PesananView extends GetView<PesananController> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontSize: 16),
+                    style: GoogleFonts.poppins(fontSize: 16),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     description,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
                   ),
                 ],
               ),

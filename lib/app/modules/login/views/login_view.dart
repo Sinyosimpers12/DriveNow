@@ -1,7 +1,8 @@
+import 'package:drive_now/app/modules/login/views/lupa_password_view.dart';
 import 'package:drive_now/app/modules/register/views/register_view.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import google_fonts
 
 import '../controllers/login_controller.dart';
 
@@ -27,7 +28,7 @@ class LoginView extends GetView<LoginController> {
                   children: [
                     Text(
                       'Login',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -36,7 +37,7 @@ class LoginView extends GetView<LoginController> {
                     SizedBox(height: 8),
                     Text(
                       'Masukan email dan password untuk melanjutkan',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 16,
                         color: Colors.white70,
                       ),
@@ -55,6 +56,7 @@ class LoginView extends GetView<LoginController> {
                     controller: controller.emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
+                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF707FDD)),
@@ -66,6 +68,7 @@ class LoginView extends GetView<LoginController> {
                     controller: controller.passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF707FDD)),
@@ -76,8 +79,13 @@ class LoginView extends GetView<LoginController> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: (){},
-                      child: Text('Lupa password?'),
+                      onPressed: () {
+                        Get.to(LupaPasswordView()); 
+                      },
+                      child: Text(
+                        'Lupa password?',
+                        style: GoogleFonts.poppins(color: Colors.blue), // Apply Poppins font
+                      ),
                     ),
                   ),
                   SizedBox(height: 16),
@@ -89,7 +97,14 @@ class LoginView extends GetView<LoginController> {
                             borderRadius: BorderRadius.circular(10)
                         )
                     ),
-                    child: Center(child: Text('Masuk', style: TextStyle(color: Colors.white),)),
+                    child: Center(
+                      child: Text(
+                        'Masuk',
+                        style: GoogleFonts.poppins( // Apply Poppins font
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 16),
                   Row(
@@ -97,7 +112,10 @@ class LoginView extends GetView<LoginController> {
                       Expanded(child: Divider()),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text('Atau lanjut dengan:'),
+                        child: Text(
+                          'Atau lanjut dengan:',
+                          style: GoogleFonts.poppins(), // Apply Poppins font
+                        ),
                       ),
                       Expanded(child: Divider()),
                     ],
@@ -122,10 +140,13 @@ class LoginView extends GetView<LoginController> {
                       child: Text.rich(
                         TextSpan(
                           text: 'Belum punya akun? ',
+                          style: GoogleFonts.poppins(), // Apply Poppins font
                           children: [
                             TextSpan(
                               text: 'Register disini',
-                              style: TextStyle(color: Colors.blue),
+                              style: GoogleFonts.poppins( // Apply Poppins font
+                                color: Colors.blue,
+                              ),
                             ),
                           ],
                         ),

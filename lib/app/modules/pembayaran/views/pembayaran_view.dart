@@ -2,6 +2,7 @@ import 'package:drive_now/app/modules/pembayaran/controllers/pembayaran_controll
 import 'package:drive_now/app/modules/pesanan/controllers/pesanan_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PembayaranView extends GetView<PembayaranController> {
   
@@ -15,7 +16,7 @@ class PembayaranView extends GetView<PembayaranController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Sewa Motor', style: TextStyle(color: Colors.white),),
+        title: Text('Sewa Motor', style: GoogleFonts.poppins(color: Colors.white),),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
@@ -42,14 +43,14 @@ class PembayaranView extends GetView<PembayaranController> {
                         children: [
                           Text(
                             pesananController.selectedVehicle.value.name,
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             pesananController.selectedVehicle.value.brand,
-                            style: const TextStyle(color: Colors.grey),
+                            style: GoogleFonts.poppins(color: Colors.grey),
                           ),
                           const SizedBox(height: 4),
                           Row(
@@ -59,7 +60,7 @@ class PembayaranView extends GetView<PembayaranController> {
                               Expanded(
                                 child: Text(
                                   controller.homeController.userData.value!.name,
-                                  style: TextStyle(color: Colors.grey[600]),
+                                  style: GoogleFonts.poppins(color: Colors.grey[600]),
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -76,7 +77,7 @@ class PembayaranView extends GetView<PembayaranController> {
                                   controller.pesananData['address']?.isNotEmpty ?? false
                                       ? controller.pesananData['address']!
                                       : 'Rental Bandung IntaRent',
-                                  style: TextStyle(color: Colors.grey[600]),
+                                  style: GoogleFonts.poppins(color: Colors.grey[600]),
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -104,9 +105,9 @@ class PembayaranView extends GetView<PembayaranController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Metode Pembayaran',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -124,11 +125,12 @@ class PembayaranView extends GetView<PembayaranController> {
                           children: [
                             ...controller.bankList.map((bank) => ListTile(
                                   title: Text(bank['name']),
-                                  subtitle: Text('No. Rekening: ${bank['accountNumber']}\nBank: ${bank['bank']}'),
+                                  subtitle: Text('No. Rekening: ${bank['accountNumber']}\nBank: ${bank['bank']}', style: GoogleFonts.poppins(),),
                                   contentPadding: EdgeInsets.zero,
+                                  
                                 )),
                             Text('*Harap membayar sesuai total harga yang tertera',
-                            style: TextStyle(fontStyle: FontStyle.italic)),
+                            style: GoogleFonts.poppins(fontStyle: FontStyle.italic)),
                             SizedBox(height: 10)
                           ],
                         ),
@@ -138,14 +140,16 @@ class PembayaranView extends GetView<PembayaranController> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF707FDD)),
                             onPressed: controller.uploadGambar,
-                            icon: const Icon(Icons.photo_library),
-                            label: const Text('Pilih dari Galeri'),
+                            icon: const Icon(Icons.photo_library, color: Colors.white),
+                            label: Text('Pilih dari Galeri', style: GoogleFonts.poppins(color: Colors.white)),
                           ),
                           ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF707FDD)),
                             onPressed: controller.uploadGambarKamera,
-                            icon: const Icon(Icons.camera_alt),
-                            label: const Text('Ambil Foto'),
+                            icon: Icon(Icons.camera_alt, color: Colors.white),
+                            label: Text('Ambil Foto', style: GoogleFonts.poppins(color: Colors.white)),
                           ),
                         ],
                       ),
@@ -170,9 +174,9 @@ class PembayaranView extends GetView<PembayaranController> {
                               TextButton.icon(
                                 onPressed: controller.hapusGambar,
                                 icon: const Icon(Icons.delete, color: Colors.red),
-                                label: const Text(
+                                label: Text(
                                   'Hapus Bukti Pembayaran',
-                                  style: TextStyle(color: Colors.red),
+                                  style: GoogleFonts.poppins(color: Colors.red),
                                 ),
                               ),
                             ],
@@ -186,10 +190,10 @@ class PembayaranView extends GetView<PembayaranController> {
                                 border: Border.all(color: Colors.grey),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
                                   'Belum ada bukti pembayaran',
-                                  style: TextStyle(color: Colors.grey),
+                                  style: GoogleFonts.poppins(color: Colors.grey),
                                 ),
                               ),
                             ),
@@ -207,7 +211,7 @@ class PembayaranView extends GetView<PembayaranController> {
                       Padding(
                         padding: const EdgeInsets.only(left: 16, top: 8),
                         child:  Text('*Harap menyiapkan uang saat mengambil kendaraan sesuai total harga yang tertera',
-                            style: TextStyle(fontStyle: FontStyle.italic))
+                            style: GoogleFonts.poppins(fontStyle: FontStyle.italic))
                       ),
                   ],
                 ),
@@ -221,9 +225,9 @@ class PembayaranView extends GetView<PembayaranController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Tanggal dan Waktu Booking',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
+                      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold,),
                     ),
                     const SizedBox(height: 7),
                     Padding(
@@ -236,9 +240,9 @@ class PembayaranView extends GetView<PembayaranController> {
                     
                     const SizedBox(height: 7),
                     
-                    const Text(
+                    Text(
                       'Items yang Dipesan',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -255,10 +259,10 @@ class PembayaranView extends GetView<PembayaranController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(item['name'], style: const TextStyle(fontSize: 16)),
+                              Text(item['name'], style: GoogleFonts.poppins(fontSize: 16)),
                               Text(
                                 'Rp.${item['price']}',
-                                style: const TextStyle(fontSize: 16),
+                                style: GoogleFonts.poppins(fontSize: 16),
                               ),
                             ],
                           ),
@@ -289,7 +293,7 @@ class PembayaranView extends GetView<PembayaranController> {
               children: [
                 Text(
                   'Total Harga: Rp.${controller.pesananData['totalPrice']}',
-                  style: const TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -305,7 +309,7 @@ class PembayaranView extends GetView<PembayaranController> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                 ),
-              child: const Text('Bayar', style: TextStyle(color: Colors.white)),
+              child: Text('Bayar', style: GoogleFonts.poppins(color: Colors.white)),
             ),
           ],
         ),
@@ -328,7 +332,7 @@ class PembayaranView extends GetView<PembayaranController> {
         leading: isCash
             ? const Icon(Icons.payments)
             : const Icon(Icons.account_balance),
-        title: Text(name),
+        title: Text(name, style: GoogleFonts.poppins(),),
         trailing: Radio<String>(
           value: name,
           groupValue: controller.selectedPaymentMethod.value,

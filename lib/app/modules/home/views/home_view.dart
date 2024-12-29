@@ -3,6 +3,7 @@ import 'package:drive_now/app/modules/pesanan/views/pesanan_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -36,11 +37,11 @@ class HomeView extends GetView<HomeController> {
                 children: [
                   Text(
                     'Halo!',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   Text(
                     userName,
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.white),
                   ),
                 ],
               );
@@ -68,7 +69,7 @@ class HomeView extends GetView<HomeController> {
                   child: Text(
                     'Pilih Kendaraan sesuai kebutuhan di Instarent',
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                 ),
                 SingleChildScrollView(
@@ -144,7 +145,6 @@ class HomeView extends GetView<HomeController> {
 
   Widget _button(String label, String value) {
     return Obx(() {
-      // Menentukan apakah tombol sedang dipilih berdasarkan kategori atau merek
       final isSelected = (controller.selectedCategory.value == value) ||
           (controller.selectedBrand.value == value) ||
           (value == '' && controller.selectedCategory.value == null && controller.selectedBrand.value == null);
@@ -177,7 +177,7 @@ class HomeView extends GetView<HomeController> {
 
             );
           },
-          child: Text(label),
+          child: Text(label, style: GoogleFonts.poppins(),),
         ),
       );
     });
@@ -185,7 +185,7 @@ class HomeView extends GetView<HomeController> {
 
 
   Widget buildVehicleCard(dynamic vehicle) {
-    bool isAvailable = vehicle.status == "Tersedia"; // Tentukan apakah kendaraan tersedia
+    bool isAvailable = vehicle.status == "Tersedia";
 
     return GestureDetector(
       onTap: isAvailable
@@ -236,17 +236,16 @@ class HomeView extends GetView<HomeController> {
                                 }
                               },
                               errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                                return Center(child: Text('Gambar gagal dimuat'));
+                                return Center(child: Text('Gambar gagal dimuat', style: GoogleFonts.poppins(),));
                               },
                             ),
-                            // Overlay "Tidak Tersedia" jika kendaraan tidak tersedia
                             if (!isAvailable)
                               Container(
                                 color: Colors.black.withOpacity(0.5),
                                 alignment: Alignment.center,
                                 child: Text(
                                   'Tidak Tersedia',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -267,19 +266,21 @@ class HomeView extends GetView<HomeController> {
                       // Nama kendaraan
                       Text(
                         vehicle.name,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                       // Model atau cc kendaraan
                       Text(
                         vehicle.category == 'Mobil' ? vehicle.model : '${vehicle.cc}cc',
+                        style: GoogleFonts.poppins(),
                       ),
                       SizedBox(height: 4),
                       // Harga kendaraan
                       Text(
                         'Rp. ${vehicle.price2} ~ Rp. ${vehicle.price}',
-                        style: TextStyle(
-                          color: Colors.black,
+                        style: GoogleFonts.poppins(
+                          color: Color(0xFF707FDD),
                           fontWeight: FontWeight.w600,
+                          fontSize: 13
                         ),
                       ),
                     ],

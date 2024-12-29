@@ -4,6 +4,7 @@ import 'package:drive_now/app/modules/riwayat/controllers/riwayat_controller.dar
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/nav_bar_controller.dart';
 
@@ -26,6 +27,8 @@ class NavBarView extends StatelessWidget {
           backgroundColor: Colors.white,
           selectedItemColor: Color(0xFF707FDD),
           unselectedItemColor: Colors.grey,
+          selectedLabelStyle: GoogleFonts.poppins(),
+          unselectedLabelStyle: GoogleFonts.poppins(),
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home),label: 'home'),
             BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Riwayat'),

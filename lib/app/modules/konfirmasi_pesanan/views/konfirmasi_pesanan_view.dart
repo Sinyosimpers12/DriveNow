@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -20,7 +21,7 @@ class KonfirmasiPesananView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF707FDD),
-        title: const Text('Sewa Motor', style: TextStyle(color: Colors.white)),
+        title: Text('Sewa Motor', style: GoogleFonts.poppins(color: Colors.white)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
@@ -48,13 +49,13 @@ class KonfirmasiPesananView extends StatelessWidget {
                       children: [
                         Text(
                           pesananController.selectedVehicle.value.name,
-                          style: const TextStyle(
+                          style: GoogleFonts.poppins(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           pesananController.selectedVehicle.value.brand,
-                          style: const TextStyle(color: Colors.grey),
+                          style: GoogleFonts.poppins(color: Colors.grey),
                         ),
                       ],
                     ),
@@ -63,14 +64,13 @@ class KonfirmasiPesananView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              
               Obx(() {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Fitur",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600), textAlign: TextAlign.start,
+                      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600), textAlign: TextAlign.start,
                     ),
                     if(controller.selectedFeatures.isEmpty)
                       Text('-'),
@@ -102,7 +102,7 @@ class KonfirmasiPesananView extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 feature.isEmpty ? '-' : feature, 
-                                style: const TextStyle(fontSize: 12),
+                                style: GoogleFonts.poppins(fontSize: 12),
                               ),
                             ],
                           ),
@@ -117,9 +117,9 @@ class KonfirmasiPesananView extends StatelessWidget {
               const SizedBox(height: 16),
 
               // Date and Time Selection
-              const Text(
+              Text(
                 "Pilih Tanggal dan Waktu Booking",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               SizedBox(
                 width: double.infinity,
@@ -133,9 +133,9 @@ class KonfirmasiPesananView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Pilih Tanggal dan Waktu Sewa',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
@@ -147,11 +147,11 @@ class KonfirmasiPesananView extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Pengambilan:'),
+                          Text('Pengambilan:', style: GoogleFonts.poppins(),),
                           const SizedBox(height: 4.0),
                           Text(
                             controller.getFormattedDateTime(),
-                            style: const TextStyle(fontSize: 16),
+                            style: GoogleFonts.poppins(fontSize: 16),
                           ),
                         ],
                       ),
@@ -161,13 +161,13 @@ class KonfirmasiPesananView extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Pengembalian:'),
+                          Text('Pengembalian:', style: GoogleFonts.poppins(),),
                           const SizedBox(height: 4.0),
                           Text(
                             controller.returnDateTime.value != null
                                 ? DateFormat("d MMMM yyyy (HH:mm)", "id_ID").format(controller.returnDateTime.value!)
                                 : 'Belum dipilih',
-                            style: const TextStyle(fontSize: 16),
+                            style: GoogleFonts.poppins(fontSize: 16),
                           ),
                         ],
                       ),
@@ -196,7 +196,7 @@ class KonfirmasiPesananView extends StatelessWidget {
             Flexible(
               child: Obx(() => Text(
                     "Total Harga: Rp.${controller.totalPrice}",
-                    style: const TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -216,9 +216,9 @@ class KonfirmasiPesananView extends StatelessWidget {
                     ),
                 ),
                 
-                child: const Text(
+                child: Text(
                   'Konfirmasi',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
                 ),
               ),
             ),
@@ -246,7 +246,7 @@ class MapsOwner extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Lokasi Penyewaan',
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 16),
           ),
         ),
         SizedBox(
@@ -289,8 +289,8 @@ class MapsOwner extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'Tap on the map or the red location pin to navigate to the location directly in your map app.',
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+            'Ketuk peta atau pin lokasi merah untuk menavigasi ke lokasi langsung di aplikasi peta Anda.',
+            style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey.shade600),
             textAlign: TextAlign.center,
           ),
         ),
@@ -391,7 +391,7 @@ class _MapsUserState extends State<MapsUser> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
               'Lokasi Pengantaran Kendaraan',
-              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+              style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 16),
             ),
           ),
           Padding(
@@ -400,10 +400,12 @@ class _MapsUserState extends State<MapsUser> {
               key: widget.controller.formKey,
               child: TextFormField(
                 controller: widget.controller.addressController,
-                decoration: const InputDecoration(
-                  labelText: 'Alamat Lengkap',
+                style: GoogleFonts.poppins(),
+                decoration: InputDecoration(
+                  labelText: 'Alamat Lengkap', labelStyle: GoogleFonts.poppins(),
                   border: OutlineInputBorder(),
-                  hintText: 'Masukkan alamat lengkap anda',
+                  hintText: 'Masukkan alamat lengkap anda', hintStyle: GoogleFonts.poppins(),
+                  
                 ),
                 maxLines: 4,
                 validator: (value) {
