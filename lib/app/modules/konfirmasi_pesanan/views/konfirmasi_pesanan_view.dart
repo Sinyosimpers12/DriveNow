@@ -19,6 +19,7 @@ class KonfirmasiPesananView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xFF707FDD),
         title: Text('Sewa Motor', style: GoogleFonts.poppins(color: Colors.white)),
@@ -85,9 +86,8 @@ class KonfirmasiPesananView extends StatelessWidget {
                             border: Border.all(color: Colors.indigo.shade100, width: 2),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          width: 120,
-                          height: 100,
                           child: Column(
+                            mainAxisSize: MainAxisSize.min, // Mengatur tinggi menyesuaikan isi.
                             children: [
                               CircleAvatar(
                                 radius: 24,
@@ -101,7 +101,7 @@ class KonfirmasiPesananView extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                feature.isEmpty ? '-' : feature, 
+                                feature.isEmpty ? '-' : feature,
                                 style: GoogleFonts.poppins(fontSize: 12),
                               ),
                             ],
@@ -189,6 +189,7 @@ class KonfirmasiPesananView extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.grey.shade200,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,22 +205,18 @@ class KonfirmasiPesananView extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ))),
             const SizedBox(width: 16),
-            SizedBox(
-              width: 100,
-              child: ElevatedButton(
-                onPressed: controller.confirmOrder,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF707FDD),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+            ElevatedButton(
+              onPressed: controller.confirmOrder,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF707FDD),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                
-                child: Text(
-                  'Konfirmasi',
-                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
-                ),
+              ),
+              child: Text(
+                'Konfirmasi',
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
               ),
             ),
           ],

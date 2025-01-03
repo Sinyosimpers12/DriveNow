@@ -12,6 +12,7 @@ class RegisterView extends GetView<RegisterController> {
   Widget build(BuildContext context) {
     Get.put(RegisterController());
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -26,7 +27,7 @@ class RegisterView extends GetView<RegisterController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Login',
+                      'Resgistrasi',
                       style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 32,
                         fontWeight: FontWeight.bold,

@@ -1,3 +1,4 @@
+import 'package:drive_now/app/modules/nav_bar/views/nav_bar_view.dart';
 import 'package:drive_now/app/modules/riwayat/views/detail_pesanan.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -142,6 +143,7 @@ class RiwayatController extends GetxController {
         colorText: Colors.white,
       );
     }
+    Get.offAll(NavBarView());
 }
 
 

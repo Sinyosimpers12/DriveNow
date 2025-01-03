@@ -15,6 +15,7 @@ class HomeView extends GetView<HomeController> {
     final controller = Get.put(HomeController());
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Row(
           children: [
@@ -196,6 +197,7 @@ class HomeView extends GetView<HomeController> {
       child: Stack(
         children: [
           Card(
+            color: Colors.white,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             elevation: 3,
             child: Column(

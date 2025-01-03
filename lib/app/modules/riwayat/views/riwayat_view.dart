@@ -10,6 +10,7 @@ class RiwayatView extends GetView<RiwayatController> {
   Widget build(BuildContext context) {
     Get.put(RiwayatController());
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Riwayat',
@@ -94,6 +95,7 @@ class RiwayatView extends GetView<RiwayatController> {
                       controller.onOrderTap(order); // Kirim data order
                     },
                     child: Card(
+                      color: Colors.white,
                       margin: const EdgeInsets.only(bottom: 16),
                       child: Column(
                         children: [

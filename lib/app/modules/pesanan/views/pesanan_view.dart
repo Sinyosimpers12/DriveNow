@@ -17,6 +17,7 @@ class PesananView extends GetView<PesananController> {
     controller.setSelectedVehicle(vehicle);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xFF707FDD),
         title: Text('Sewa Motor', style: GoogleFonts.poppins(color: Colors.white)),
@@ -59,12 +60,14 @@ class PesananView extends GetView<PesananController> {
                           fontSize: 18, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   Obx(() => DropdownButton<String>(
+                    dropdownColor: Colors.white,
                         value: controller.selectedPriceOption.value.isNotEmpty
                             ? controller.selectedPriceOption.value
                             : null,
                         hint: Text("Pilih Durasi", style: GoogleFonts.poppins(),),
                         items: [
                           DropdownMenuItem(
+                            
                             value: vehicle.price2,
                             child: Text("Per 12 Jam: Rp.${vehicle.price2}", style: GoogleFonts.poppins(),),
                           ),
@@ -137,6 +140,7 @@ class PesananView extends GetView<PesananController> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.grey.shade200,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

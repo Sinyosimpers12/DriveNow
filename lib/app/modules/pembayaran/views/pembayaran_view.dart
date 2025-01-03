@@ -277,13 +277,8 @@ class PembayaranView extends GetView<PembayaranController> {
         ),
       ),
       bottomNavigationBar: Container(
+        color: Colors.grey.shade200,
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(color: Colors.grey[300]!),
-          ),
-        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

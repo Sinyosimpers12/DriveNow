@@ -13,6 +13,7 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     Get.put(LoginController());
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -27,7 +28,7 @@ class LoginView extends GetView<LoginController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Login',
+                      'Masuk',
                       style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 32,
                         fontWeight: FontWeight.bold,

@@ -20,6 +20,7 @@ class DetailPesananView extends StatelessWidget {
     final waktuPengembalian = order['return'];
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -135,6 +136,7 @@ class DetailPesananView extends StatelessWidget {
                     ),
                   ),
                   Card(
+                    color: Colors.white,
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     child: Padding(
                       padding: const EdgeInsets.all(16),

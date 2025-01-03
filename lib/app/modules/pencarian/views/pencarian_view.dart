@@ -10,6 +10,7 @@ class PencarianView extends GetView<PencarianController> {
   Widget build(BuildContext context) {
     Get.put(PencarianController());
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           "Pencarian Kendaraan",
@@ -85,6 +86,7 @@ class PencarianView extends GetView<PencarianController> {
     bool isAvailable = vehicle.status == "Tersedia";
 
     return Card(
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),

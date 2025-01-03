@@ -12,12 +12,17 @@ class LupaPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Lupa Password',
-          style: GoogleFonts.poppins(), // Apply Poppins font
+          style: GoogleFonts.poppins(color: Colors.white), // Apply Poppins font
         ),
         backgroundColor: Color(0xFF707FDD),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -62,17 +67,6 @@ class LupaPasswordView extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-              GestureDetector(
-                onTap: () {
-                  Get.back(); // Go back to the login page
-                },
-                child: Center(
-                  child: Text(
-                    'Kembali ke halaman login',
-                    style: GoogleFonts.poppins(color: Colors.blue), // Apply Poppins font
-                  ),
-                ),
-              ),
             ],
           ),
         ),
