@@ -1,4 +1,5 @@
 
+import 'package:drive_now/app/modules/home/controllers/home_controller.dart';
 import 'package:drive_now/app/modules/pesanan/controllers/pesanan_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class KonfirmasiPesananController extends GetxController {
   var price = ''.obs; 
   var priceVehicle = 0.obs; 
   final formKey = GlobalKey<FormState>();
+  final HomeController homeController = Get.find();
 
 
   var selectedFeatures = <String>[].obs;
@@ -43,13 +45,14 @@ class KonfirmasiPesananController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    selectedPriceOption.value = pesananController.selectedDuration.value;
+    selectedBookingDateTime.value = homeController.selectedBookingDateTime.value ?? null;
+    returnDateTime.value = homeController.returnDateTime.value ?? null;
     initializeData();
   }
 
   void initializeData() {
     totalPrice.value = pesananArguments['price'];
-    price.value = pesananArguments['priceVehicle'];
+    price.value = pesananArguments['priceVehicle'].toString();
     selectedFeatures.assignAll(pesananArguments['features']);
     helmCount.value = pesananArguments['helmets'];
     raincoatCount.value = pesananArguments['raincoats'];
@@ -97,8 +100,8 @@ class KonfirmasiPesananController extends GetxController {
   }
 
   void updateTotalPrice() {
-    int total = items.fold(0, (sum, item) => sum + item['price'] as int);
-    print("Total Price: $total");
+    // int total = items.fold(0, (sum, item) => sum + item['price'] as int);
+    print("Total Price: $price");
   }
   
 
@@ -107,44 +110,6 @@ class KonfirmasiPesananController extends GetxController {
       return DateFormat("d MMMM yyyy (HH:mm)", "id_ID").format(selectedBookingDateTime.value!);
     } else {
       return "Belum dipilih";
-    }
-  }
-
-  void calculateReturnDateTime() {
-    if (selectedBookingDateTime.value != null) {
-      if (selectedPriceOption.value == '12 Jam') {
-        returnDateTime.value = selectedBookingDateTime.value!.add(Duration(hours: 12));
-      } else if (selectedPriceOption.value == 'Per Hari') {
-        returnDateTime.value = selectedBookingDateTime.value!.add(Duration(days: 1));
-      }
-    }
-  }
-
-  Future<void> pickDateTime(BuildContext context) async {
-    DateTime? selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    );
-
-    if (selectedDate != null) {
-      TimeOfDay? selectedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-      );
-
-      if (selectedTime != null) {
-        DateTime combinedDateTime = DateTime(
-          selectedDate.year,
-          selectedDate.month,
-          selectedDate.day,
-          selectedTime.hour,
-          selectedTime.minute,
-        );
-        selectedBookingDateTime.value = combinedDateTime;
-        calculateReturnDateTime();
-      }
     }
   }
 
@@ -188,7 +153,6 @@ class KonfirmasiPesananController extends GetxController {
       }
     }
 
-    // Proceed with order
     Get.toNamed('/pembayaran', arguments: {
       'totalPrice': items.fold(0, (sum, item) => sum + item['price'] as int),
       'priceVehicle': selectedPriceOption,

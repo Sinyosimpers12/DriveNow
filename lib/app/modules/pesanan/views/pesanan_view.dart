@@ -53,39 +53,24 @@ class PesananView extends GetView<PesananController> {
                   const SizedBox(height: 4),
                   Text(vehicle.brand, style: GoogleFonts.poppins(color: Colors.grey)),
                   Text(vehicle.cc, style: GoogleFonts.poppins(color: Colors.grey)),
+                  Text(vehicle.platnomor, style: GoogleFonts.poppins(color: Colors.grey)),
                   const SizedBox(height: 16),
 
-                  Text('Pilih Harga',
+                  Text('Tipe Sewa ${controller.homeController.selectedRentalType}',
                       style: GoogleFonts.poppins(
                           fontSize: 18, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 8),
-                  Obx(() => DropdownButton<String>(
-                    dropdownColor: Colors.white,
-                        value: controller.selectedPriceOption.value.isNotEmpty
-                            ? controller.selectedPriceOption.value
-                            : null,
-                        hint: Text("Pilih Durasi", style: GoogleFonts.poppins(),),
-                        items: [
-                          DropdownMenuItem(
-                            
-                            value: vehicle.price2,
-                            child: Text("Per 12 Jam: Rp.${vehicle.price2}", style: GoogleFonts.poppins(),),
-                          ),
-                          DropdownMenuItem(
-                            value: vehicle.price,
-                            child: Text("Per Hari: Rp.${vehicle.price}", style: GoogleFonts.poppins(),),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          if (value != null) {
-                            if (value == vehicle.price2) {
-                              controller.selectPrice(value, '12 Jam');
-                            } else {
-                              controller.selectPrice(value, 'Per Hari');
-                            }
-                          }
-                        },
-                      )),
+                  Text(
+                    'Harga sewa: ${controller.homeController.selectedRentalType.value == 'Harian' ? vehicle.price : vehicle.price2}',
+                    style: GoogleFonts.poppins(fontSize: 12),
+                  ),
+                  Obx(() {
+                    return Text(
+                      controller.homeController.selectedRentalType.value == 'Harian'
+                          ? 'Durasi Sewa: ${controller.homeController.rentalDays} Hari'
+                          : 'Durasi Sewa: ${controller.homeController.selectedRentalType.value}',
+                      style: GoogleFonts.poppins(fontSize: 12),
+                    );
+                  }),
 
                   const SizedBox(height: 16),
 

@@ -1,89 +1,114 @@
 import 'package:drive_now/app/data/kendaraan_model.dart';
+import 'package:drive_now/app/modules/home/controllers/home_controller.dart';
 import 'package:drive_now/app/modules/konfirmasi_pesanan/views/konfirmasi_pesanan_view.dart';
 import 'package:get/get.dart';
 
 class PesananController extends GetxController {
-  var selectedVehicle = KendaraanModel(name: '', price2: '', price: '', imageUrl: '', category: '', brand: '', cc: '', model: '', key: '', status: '').obs;
-  var price = 0.obs;
-  var selectedPriceOption = "".obs;
-  var selectedDuration = "".obs;
-  var featuresSelected = <String>[].obs;
+  final HomeController homeController = Get.find();
+  final selectedVehicle = KendaraanModel(
+    name: '',
+    price2: '',
+    price: '',
+    imageUrl: '',
+    platnomor: '',
+    category: '',
+    brand: '',
+    cc: '',
+    model: '',
+    key: '',
+    status: '',
+  ).obs;
+  final price = 0.obs;
+  final selectedPriceOption = "".obs;
+  final featuresSelected = <String>[].obs;
+  final helmetCount = 0.obs;
+  final raincoatCount = 0.obs;
+  final rentalType = '';
 
-  var helmetCount = 0.obs;
-  var raincoatCount = 0.obs;
+  @override
+  void onInit() {
+    super.onInit();
+    selectPrice();
+  }
 
   void setSelectedVehicle(KendaraanModel vehicle) {
     selectedVehicle.value = vehicle;
-    price.value = 0;
-    selectedPriceOption.value = "";
-    helmetCount.value = 0;
-    raincoatCount.value = 0;
-    featuresSelected.clear();  // Clear previous features when vehicle is changed
+    resetOrderDetails();
+    selectPrice();
+    print(price);
   }
 
-  void selectPrice(String priceOption, String duration) {
-    selectedPriceOption.value = priceOption;
-    selectedDuration.value = duration;
-    price.value = int.parse(priceOption);
-    resetToggle();
+  void resetOrderDetails() {
+    price.value = 0;
+    selectedPriceOption.value = homeController.selectedRentalType.value;
+    helmetCount.value = 0;
+    raincoatCount.value = 0;
+    featuresSelected.clear();
+  }
+
+  void selectPrice() {
+    final rentalType = selectedPriceOption.value;
+    if (selectedVehicle.value.price.isEmpty || selectedVehicle.value.price2.isEmpty) {
+      price.value = 0;
+      return;
+    }
+
+    if (rentalType == 'Harian') {
+      price.value = int.parse(selectedVehicle.value.price) * homeController.rentalDays;
+    } else {
+      price.value = int.parse(selectedVehicle.value.price2);
+    }
   }
 
   void toggleFeature(String feature) {
-    // Fitur selain helm dan raincoat
-    if (feature != 'Helm' && feature != 'Jas Hujan') {
-      if (featuresSelected.contains(feature)) {
-        featuresSelected.remove(feature);
-        price.value -= getFeaturePrice(feature);
-      } else {
-        featuresSelected.add(feature);
-        price.value += getFeaturePrice(feature);
-      }
+    if (feature == 'Helm' || feature == 'Jas Hujan') return;
+
+    if (featuresSelected.contains(feature)) {
+      featuresSelected.remove(feature);
+      price.value -= getFeaturePrice(feature);
+    } else {
+      featuresSelected.add(feature);
+      price.value += getFeaturePrice(feature);
     }
   }
 
   void incrementFeature(String feature) {
-    if (feature == 'Helm') {
-      helmetCount.value++;
-      price.value += 5000;
-      _updateFeatureInSelected('Helm', helmetCount.value);
-    } else if (feature == 'Jas Hujan') {
-      raincoatCount.value++;
-      price.value += 3000;
-      _updateFeatureInSelected('Jas Hujan', raincoatCount.value);
+    final incrementAmount = feature == 'Helm' ? 5000 : feature == 'Jas Hujan' ? 3000 : 0;
+    if (incrementAmount > 0) {
+      if (feature == 'Helm') {
+        helmetCount.value++;
+      } else if (feature == 'Jas Hujan') {
+        raincoatCount.value++;
+      }
+      price.value += incrementAmount;
+      _updateFeatureInSelected(feature, feature == 'Helm' ? helmetCount.value : raincoatCount.value);
     }
   }
 
   void decrementFeature(String feature) {
-    if (feature == 'Helm' && helmetCount.value > 0) {
-      helmetCount.value--;
-      price.value -= 5000;
-      if (helmetCount.value > 0) {
-        _updateFeatureInSelected('Helm', helmetCount.value);
-      } else {
-        _removeFeatureFromSelected('Helm');
-      }
-    } else if (feature == 'Jas Hujan' && raincoatCount.value > 0) {
-      raincoatCount.value--;
-      price.value -= 3000;
-      if (raincoatCount.value > 0) {
-        _updateFeatureInSelected('Jas Hujan', raincoatCount.value);
-      } else {
-        _removeFeatureFromSelected('Jas Hujan');
+    final decrementAmount = feature == 'Helm' ? 5000 : feature == 'Jas Hujan' ? 3000 : 0;
+    if (decrementAmount > 0) {
+      if (feature == 'Helm' && helmetCount.value > 0) {
+        helmetCount.value--;
+        _handleFeatureRemoval('Helm', helmetCount.value, decrementAmount);
+      } else if (feature == 'Jas Hujan' && raincoatCount.value > 0) {
+        raincoatCount.value--;
+        _handleFeatureRemoval('Jas Hujan', raincoatCount.value, decrementAmount);
       }
     }
   }
 
-  void resetToggle() {
-    featuresSelected.clear();
-    helmetCount.value = 0;
-    raincoatCount.value = 0;
-    price.value = selectedPriceOption.value.isNotEmpty
-        ? int.parse(selectedPriceOption.value)
-        : 0;
+  void _handleFeatureRemoval(String feature, int count, int decrementAmount) {
+    price.value -= decrementAmount;
+    if (count > 0) {
+      _updateFeatureInSelected(feature, count);
+    } else {
+      _removeFeatureFromSelected(feature);
+    }
   }
 
   Future<void> processOrder() async {
-    if (selectedDuration.value.isEmpty) {
+    if (homeController.selectedRentalType.value.isEmpty) {
       Get.snackbar(
         "Error",
         "Durasi sewa harus dipilih.",
@@ -94,14 +119,14 @@ class PesananController extends GetxController {
 
     try {
       Get.to(() => KonfirmasiPesananView(), arguments: {
-      'price': price.value,
-      'features': featuresSelected,
-      'helmets': helmetCount.value,
-      'raincoats': raincoatCount.value,
-      'priceVehicle': selectedPriceOption.contains('12 Jam')
-          ? selectedVehicle.value.price
-          : selectedVehicle.value.price2,
-    });
+        'price': price.value,
+        'features': featuresSelected,
+        'helmets': helmetCount.value,
+        'raincoats': raincoatCount.value,
+        'priceVehicle': selectedPriceOption.value.contains('12 Jam')
+          ? selectedVehicle.value.price2
+          : int.parse(selectedVehicle.value.price) * homeController.rentalDays,
+      });
     } catch (e) {
       Get.snackbar(
         "Error",
@@ -111,21 +136,18 @@ class PesananController extends GetxController {
     }
   }
 
-
   int getFeaturePrice(String feature) {
     switch (feature) {
       case 'Antar Kendaraan':
-        return 15000; // Harga fitur "Antar Kendaraan"
+        return 15000;
       default:
-        return 0; // Jika fitur tidak dikenal
+        return 0;
     }
   }
 
   void _updateFeatureInSelected(String feature, int count) {
-    String featureWithCount = '$feature ($count)';
-    // Hapus jika sudah ada, untuk menghindari duplikasi
+    final featureWithCount = '$feature ($count)';
     featuresSelected.removeWhere((f) => f.startsWith(feature));
-    // Tambahkan fitur dengan jumlah baru
     featuresSelected.add(featureWithCount);
   }
 

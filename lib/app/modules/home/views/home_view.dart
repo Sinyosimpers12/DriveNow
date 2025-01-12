@@ -1,9 +1,11 @@
-import 'package:drive_now/app/modules/pencarian/views/pencarian_view.dart';
+import 'package:drive_now/app/modules/home/views/pencarian_view.dart';
 import 'package:drive_now/app/modules/pesanan/views/pesanan_view.dart';
+import 'package:drive_now/app/modules/profil/views/persyaratan_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -99,6 +101,98 @@ class HomeView extends GetView<HomeController> {
               ],
             );
           }),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Obx(() {
+              return DropdownButton<String>(
+                value: controller.selectedRentalType.value,
+                hint: Text(
+                  'Pilih Jenis Sewa',
+                  style: GoogleFonts.poppins(color: Colors.black),
+                ),
+                isExpanded: true,
+                items: [
+                  DropdownMenuItem<String>(
+                    value: 'Harian',
+                    child: Text('Sewa Harian', style: GoogleFonts.poppins()),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: '12 Jam',
+                    child: Text('Sewa 12 Jam', style: GoogleFonts.poppins()),
+                  ),
+                ],
+                onChanged: (String? value) {
+                  if (value != null) {
+                    controller.selectedRentalType.value = value;
+                  }
+                },
+              );
+            }),
+          ),
+
+
+          Padding(
+            padding: const EdgeInsets.all(16.0), // Adjust the padding as needed
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await controller.pickDateRangeWithTime(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF707FDD),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'Pilih Tanggal dan Waktu Sewa',
+                      style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ),
+                Obx(() {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Pengambilan:', style: GoogleFonts.poppins(),),
+                            const SizedBox(height: 4.0),
+                            Text(
+                              controller.getFormattedDateTime(),
+                              style: GoogleFonts.poppins(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 16.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Pengembalian:', style: GoogleFonts.poppins(),),
+                            const SizedBox(height: 4.0),
+                            Text(
+                              controller.returnDateTime.value != null
+                                  ? DateFormat("d MMMM yyyy (HH:mm)", "id_ID").format(controller.returnDateTime.value!)
+                                  : 'Belum dipilih',
+                              style: GoogleFonts.poppins(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ],
+            ),
+          ),
+
           Expanded(
             child: Obx(() {
               if (controller.isLoading.value) {
@@ -191,7 +285,17 @@ class HomeView extends GetView<HomeController> {
     return GestureDetector(
       onTap: isAvailable
           ? () {
-              Get.to(() => PesananView(vehicle: vehicle));
+              if (controller.userData.value?.sim == '' || controller.userData.value!.sim.isEmpty) {
+                Get.snackbar(
+                  'Info',
+                  'Lengkapi data SIM Anda untuk melanjutkan.',
+                  snackPosition: SnackPosition.BOTTOM,
+                );
+                Get.to(() => PersyaratanView());
+              } else {
+                // Pindah ke halaman PesananView jika data SIM tersedia
+                Get.to(() => PesananView(vehicle: vehicle));
+              }
             }
           : null, // GestureDetector tidak akan berfungsi jika kendaraan tidak tersedia
       child: Stack(

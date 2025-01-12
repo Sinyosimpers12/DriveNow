@@ -239,9 +239,18 @@ class PembayaranView extends GetView<PembayaranController> {
                     ),
                     
                     const SizedBox(height: 7),
-                    
+                    Obx(() {
+                    return Text(
+                        controller.homeController.selectedRentalType.value == 'Harian'
+                            ? 'Durasi Sewa: ${controller.homeController.rentalDays} Hari'
+                            : 'Durasi Sewa: ${controller.homeController.selectedRentalType.value}',
+                        style: GoogleFonts.poppins(fontSize: 16),
+                      );
+                    }),
+                    const SizedBox(height: 7),
+                      
                     Text(
-                      'Items yang Dipesan',
+                      'Item yang Dipesan',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

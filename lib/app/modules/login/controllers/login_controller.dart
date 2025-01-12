@@ -14,6 +14,12 @@ class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  var isPasswordVisible = false.obs;
+
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
+
   /// Login dengan Google
   Future<void> loginWithGoogleAndSaveData() async {
     try {

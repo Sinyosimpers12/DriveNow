@@ -1,13 +1,17 @@
-import 'package:drive_now/app/modules/nav_bar/views/nav_bar_view.dart';
-import 'package:drive_now/app/modules/riwayat/views/detail_pesanan.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import 'package:drive_now/app/modules/nav_bar/views/nav_bar_view.dart';
+import 'package:drive_now/app/modules/riwayat/views/detail_pesanan.dart';
 
 class RiwayatController extends GetxController {
   final databaseRef = FirebaseDatabase.instance.ref('pesanan');
+
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin; // Declare it here
 
   RxList<Map<String, dynamic>> userOrders = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> filteredOrders = <Map<String, dynamic>>[].obs;
@@ -18,11 +22,12 @@ class RiwayatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    flutterLocalNotificationsPlugin = Get.put(FlutterLocalNotificationsPlugin()); // Initialize here
     fetchUserOrders();
   }
 
   void onOrderTap(Map order) {
-    Get.to(DetailPesananView(), arguments: order); 
+    Get.to(DetailPesananView(), arguments: order);
   }
 
   String formatTanggal(String rawDate) {
@@ -51,6 +56,8 @@ class RiwayatController extends GetxController {
         return Color(0xFFFFA500);
       case 'Selesai':
         return Colors.green;
+      case 'Dibatalkan':
+        return Colors.red;
       default:
         return Colors.grey;
     }
@@ -61,21 +68,28 @@ class RiwayatController extends GetxController {
     final uid = user?.uid;
 
     if (uid != null) {
-      // Listener untuk mendeteksi perubahan secara real-time
       databaseRef.orderByChild('dataUser/uid').equalTo(uid).onValue.listen((event) {
         final data = event.snapshot.value;
 
         if (data != null) {
           Map<String, dynamic> ordersData = Map<String, dynamic>.from(data as Map);
 
-          // Kosongkan list sebelum diisi ulang
           userOrders.clear();
 
           ordersData.forEach((key, value) {
-            userOrders.add(Map<String, dynamic>.from(value));
+            final order = Map<String, dynamic>.from(value);
+
+            // Cek jika status berubah (periksa semua status)
+            final previousOrder = userOrders.firstWhereOrNull((o) => o['id'] == order['id']);
+            if (previousOrder != null &&
+                previousOrder['statusPemesanan'] != order['statusPemesanan']) {
+              _showLocalNotification();
+            }
+
+            userOrders.add(order);
           });
 
-          sortOrdersByDate(); // Sort ulang setiap ada perubahan
+          sortOrdersByDate();
         }
       }, onError: (error) {
         print('Error fetching orders in real-time: $error');
@@ -88,7 +102,7 @@ class RiwayatController extends GetxController {
     userOrders.sort((a, b) {
       DateTime dateA = DateTime.parse(a['tanggalPesanan']);
       DateTime dateB = DateTime.parse(b['tanggalPesanan']);
-      return dateB.compareTo(dateA); // Sort descending (latest first)
+      return dateB.compareTo(dateA);
     });
     filteredOrders.value = userOrders;
   }
@@ -144,8 +158,7 @@ class RiwayatController extends GetxController {
       );
     }
     Get.offAll(NavBarView());
-}
-
+  }
 
   Future<void> selectDateRange(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
@@ -163,5 +176,27 @@ class RiwayatController extends GetxController {
       endDate = picked.end;
       applyFilter();
     }
+  }
+
+  Future<void> _showLocalNotification() async {
+    String title = 'Status Pesanan Diperbarui';
+    String body = 'Status pesanan Anda diperbarui.';
+
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      'your_channel_id',
+      'Status Pesanan',
+      channelDescription: 'Notifikasi perubahan status pesanan',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      notificationDetails,
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:drive_now/app/modules/home/controllers/home_controller.dart';
 import 'package:drive_now/app/modules/profil/views/profil_view.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image/image.dart' as img;
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -192,13 +193,60 @@ class ProfilController extends GetxController {
 
   // Logout function
   Future<void> logout() async {
-    try {
-      await auth.signOut();
-      await googleSignIn.signOut();
-      Get.snackbar('Logout', 'Anda telah berhasil logout.');
-      Get.offAllNamed('/login');
-    } catch (e) {
-      Get.snackbar('Error', 'Gagal logout: ${e.toString()}');
-    }
+    Get.dialog(
+      AlertDialog(
+        title: Text(
+          'Keluar',
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        content: Text(
+          'Apakah Anda yakin ingin logout?',
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back(); // Tutup dialog tanpa logout
+            },
+            child: Text(
+              'Batal',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              try {
+                // Lanjutkan proses logout
+                await auth.signOut();
+                await googleSignIn.signOut();
+
+                Get.back(); // Tutup dialog
+                Get.snackbar('Keluar', 'Anda telah berhasil logout.');
+                Get.offAllNamed('/login'); // Arahkan ke halaman login
+              } catch (e) {
+                Get.snackbar('Error', 'Gagal Keluar: ${e.toString()}');
+              }
+            },
+            child: Text(
+              'Logout',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.red,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

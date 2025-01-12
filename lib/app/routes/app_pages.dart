@@ -11,8 +11,6 @@ import '../modules/nav_bar/bindings/nav_bar_binding.dart';
 import '../modules/nav_bar/views/nav_bar_view.dart';
 import '../modules/pembayaran/bindings/pembayaran_binding.dart';
 import '../modules/pembayaran/views/pembayaran_view.dart';
-import '../modules/pencarian/bindings/pencarian_binding.dart';
-import '../modules/pencarian/views/pencarian_view.dart';
 import '../modules/pesanan/bindings/pesanan_binding.dart';
 import '../modules/pesanan/views/pesanan_view.dart';
 import '../modules/profil/bindings/profil_binding.dart';
@@ -65,11 +63,6 @@ class AppPages {
       name: _Paths.PESANAN,
       page: () => PesananView(vehicle: Get.arguments),
       binding: PesananBinding(),
-    ),
-    GetPage(
-      name: _Paths.PENCARIAN,
-      page: () => const PencarianView(),
-      binding: PencarianBinding(),
     ),
     GetPage(
       name: _Paths.KONFIRMASI_PESANAN,

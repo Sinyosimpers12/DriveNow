@@ -118,26 +118,8 @@ class KonfirmasiPesananView extends StatelessWidget {
 
               // Date and Time Selection
               Text(
-                "Pilih Tanggal dan Waktu Booking",
+                "Tanggal dan Waktu Booking",
                 style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await controller.pickDateTime(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF707FDD),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    'Pilih Tanggal dan Waktu Sewa',
-                    style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
-                  ),
-                ),
               ),
 
               Obx(() {
@@ -151,7 +133,7 @@ class KonfirmasiPesananView extends StatelessWidget {
                           const SizedBox(height: 4.0),
                           Text(
                             controller.getFormattedDateTime(),
-                            style: GoogleFonts.poppins(fontSize: 16),
+                            style: GoogleFonts.poppins(fontSize: 12),
                           ),
                         ],
                       ),
@@ -167,7 +149,7 @@ class KonfirmasiPesananView extends StatelessWidget {
                             controller.returnDateTime.value != null
                                 ? DateFormat("d MMMM yyyy (HH:mm)", "id_ID").format(controller.returnDateTime.value!)
                                 : 'Belum dipilih',
-                            style: GoogleFonts.poppins(fontSize: 16),
+                            style: GoogleFonts.poppins(fontSize: 12),
                           ),
                         ],
                       ),

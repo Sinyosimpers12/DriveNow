@@ -1,14 +1,16 @@
+import 'package:drive_now/app/modules/home/controllers/home_controller.dart';
+import 'package:drive_now/app/modules/pesanan/views/pesanan_view.dart';
+import 'package:drive_now/app/modules/profil/views/persyaratan_view.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 
-import '../controllers/pencarian_controller.dart';
-
-class PencarianView extends GetView<PencarianController> {
+class PencarianView extends GetView<HomeController> {
   const PencarianView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(PencarianController());
+    HomeController homeController = Get.find();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -29,7 +31,7 @@ class PencarianView extends GetView<PencarianController> {
           children: [
             TextField(
               onChanged: (query) {
-                controller.filterByName(query);
+                homeController.filterByName(query);
               },
               decoration: InputDecoration(
                 labelText: "Cari berdasarkan nama",
@@ -42,17 +44,18 @@ class PencarianView extends GetView<PencarianController> {
             const SizedBox(height: 16),
             Expanded(
               child: Obx(() {
-                if (controller.isLoading.value) {
+                if (homeController.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (controller.filteredData.isEmpty) {
+                if (homeController.filteredUploads.isEmpty) {
                   return const Center(child: Text("Tidak ada kendaraan ditemukan"));
                 }
 
+                // Filter kendaraan yang tersedia dan tidak tersedia
                 List<dynamic> availableVehicles = [];
                 List<dynamic> unavailableVehicles = [];
 
-                for (var vehicle in controller.filteredData) {
+                for (var vehicle in homeController.filteredUploads) {
                   if (vehicle.status == "Tersedia") {
                     availableVehicles.add(vehicle);
                   } else {
@@ -60,7 +63,9 @@ class PencarianView extends GetView<PencarianController> {
                   }
                 }
 
-              List<dynamic> sortedVehicles = availableVehicles..addAll(unavailableVehicles);
+                // Gabungkan kendaraan yang tersedia dan tidak tersedia
+                List<dynamic> sortedVehicles = availableVehicles..addAll(unavailableVehicles);
+
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
@@ -70,19 +75,18 @@ class PencarianView extends GetView<PencarianController> {
                   itemCount: sortedVehicles.length,
                   itemBuilder: (context, index) {
                     final vehicle = sortedVehicles[index];
-                    return buildVehicleCard(vehicle);
+                    return buildVehicleCard(vehicle, homeController);
                   },
                 );
               }),
             ),
-
           ],
         ),
       ),
     );
   }
 
-  Widget buildVehicleCard(dynamic vehicle) {
+  Widget buildVehicleCard(dynamic vehicle, HomeController homeController) {
     bool isAvailable = vehicle.status == "Tersedia";
 
     return Card(
@@ -96,7 +100,17 @@ class PencarianView extends GetView<PencarianController> {
         borderRadius: BorderRadius.circular(12),
         onTap: isAvailable
             ? () {
-                Get.toNamed('/pesanan', arguments: vehicle);
+                // Cek data SIM pengguna
+                if (homeController.userData.value?.sim == '' || homeController.userData.value!.sim.isEmpty) {
+                  Get.snackbar(
+                    'Info',
+                    'Lengkapi data SIM Anda untuk melanjutkan.',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                  Get.to(() => PersyaratanView());
+                } else {
+                  Get.to(() => PesananView(vehicle: vehicle));
+                }
               }
             : null,
         child: Row(

@@ -65,18 +65,26 @@ class LoginView extends GetView<LoginController> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  TextField(
-                    controller: controller.passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF707FDD)),
-                      ),
-                    ),
-                    obscureText: true,
-                  ),
+                  Obx(() => TextField(
+                        controller: controller.passwordController,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          labelStyle: GoogleFonts.poppins(), // Apply Poppins font
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF707FDD)),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              controller.isPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: controller.togglePasswordVisibility,
+                          ),
+                        ),
+                        obscureText: !controller.isPasswordVisible.value,
+                      )),
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(

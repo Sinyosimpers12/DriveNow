@@ -12,7 +12,7 @@ class EditProfileView extends GetView<ProfilController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF8C9EFF),
+        backgroundColor: Color(0xFF707FDD),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
@@ -66,7 +66,7 @@ class EditProfileView extends GetView<ProfilController> {
                 child: ElevatedButton(
                   onPressed: controller.saveProfile,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF8C9EFF),
+                    backgroundColor: Color(0xFF707FDD),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

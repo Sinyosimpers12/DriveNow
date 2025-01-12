@@ -10,7 +10,6 @@ abstract class Routes {
   static const RIWAYAT = _Paths.RIWAYAT;
   static const PROFIL = _Paths.PROFIL;
   static const PESANAN = _Paths.PESANAN;
-  static const PENCARIAN = _Paths.PENCARIAN;
   static const KONFIRMASI_PESANAN = _Paths.KONFIRMASI_PESANAN;
   static const PEMBAYARAN = _Paths.PEMBAYARAN;
 }
@@ -24,7 +23,6 @@ abstract class _Paths {
   static const RIWAYAT = '/riwayat';
   static const PROFIL = '/profil';
   static const PESANAN = '/pesanan';
-  static const PENCARIAN = '/pencarian';
   static const KONFIRMASI_PESANAN = '/konfirmasi-pesanan';
   static const PEMBAYARAN = '/pembayaran';
 }

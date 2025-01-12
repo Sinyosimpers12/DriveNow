@@ -27,7 +27,7 @@ class RegisterView extends GetView<RegisterController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Resgistrasi',
+                      'Registrasi',
                       style: GoogleFonts.poppins( // Apply Poppins font
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
@@ -88,31 +88,47 @@ class RegisterView extends GetView<RegisterController> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  TextField(
-                    controller: controller.passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF707FDD)),
-                      ),
-                    ),
-                    obscureText: true,
-                  ),
+                  Obx(() => TextField(
+                        controller: controller.passwordController,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          labelStyle: GoogleFonts.poppins(), // Apply Poppins font
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF707FDD)),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              controller.isPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: controller.togglePasswordVisibility,
+                          ),
+                        ),
+                        obscureText: !controller.isPasswordVisible.value,
+                      )),
                   SizedBox(height: 16),
-                  TextField(
-                    controller: controller.confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Konfirmasi Password',
-                      labelStyle: GoogleFonts.poppins(), // Apply Poppins font
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF707FDD)),
-                      ),
-                    ),
-                    obscureText: true,
-                  ),
+                  Obx(() => TextField(
+                        controller: controller.confirmPasswordController,
+                        decoration: InputDecoration(
+                          labelText: 'Konfirmasi Password',
+                          labelStyle: GoogleFonts.poppins(), // Apply Poppins font
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF707FDD)),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              controller.isConfirmPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: controller.toggleConfirmPasswordVisibility,
+                          ),
+                        ),
+                        obscureText: !controller.isConfirmPasswordVisible.value,
+                      )),
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: controller.register,

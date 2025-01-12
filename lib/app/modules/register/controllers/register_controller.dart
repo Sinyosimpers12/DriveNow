@@ -15,6 +15,17 @@ class RegisterController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  var isPasswordVisible = false.obs;
+  var isConfirmPasswordVisible = false.obs;
+
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
+
+  void toggleConfirmPasswordVisibility() {
+    isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
+  }
+
   // Fungsi untuk registrasi pengguna
   void register() async {
     final name = nameController.text.trim();
