@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controllers/riwayat_controller.dart';
 
 class RiwayatView extends GetView<RiwayatController> {
@@ -88,6 +89,10 @@ class RiwayatView extends GetView<RiwayatController> {
                   final status = order['statusPemesanan'] ?? 'Tidak Diketahui';
                   final rawDate = order['tanggalPesanan'] ?? '';
                   final bookingDate = controller.formatTanggal(rawDate);
+                  final alamat = order['pesananAlamat'];
+                  final deliveryPersonPhotoUrl = order['fotourl'];
+                  final deliveryPersonName = order['namaKaryawan'];
+                  final deliveryPersonPhone = order['noHp'];
 
                   return GestureDetector(
                     onTap: () {
@@ -135,8 +140,59 @@ class RiwayatView extends GetView<RiwayatController> {
                                   vehicleType,
                                   style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
                                 ),
+                                if (alamat != 'Rental Bandung Instarent')
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        'Diantar oleh:',
+                                        style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 25,
+                                            backgroundImage: NetworkImage(deliveryPersonPhotoUrl ?? ''),
+                                            backgroundColor: Colors.grey[300],
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  deliveryPersonName ?? 'Nama tidak tersedia',
+                                                  style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  deliveryPersonPhone ?? 'No HP tidak tersedia',
+                                                  style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.phone, color: Colors.green),
+                                            onPressed: () {
+                                              // Aksi untuk menelepon
+                                              if (deliveryPersonPhone != null) {
+                                                launchUrl(Uri.parse('tel:$deliveryPersonPhone'));
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      const Divider(height: 20, thickness: 1, color: Colors.grey),
+                                    ],
+                                  )
+
                               ],
                             ),
+
                           ),
                           Container(
                             width: double.infinity,

@@ -34,7 +34,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUploads();
-    fetchUserData();  // Panggil fungsi untuk mengambil data pengguna
+    fetchUserData();
     final user = auth.currentUser;
     if (user != null) {
       final uid = user.uid;
@@ -48,12 +48,10 @@ class HomeController extends GetxController {
       });
     }
 
-    // Listen to changes in selectedBookingDateTime and returnDateTime
     ever(selectedBookingDateTime, (_) => fetchUploads());
     ever(returnDateTime, (_) => fetchUploads());
   }
 
-  // Fungsi untuk mengambil data pengguna
   Future<void> fetchUserData() async {
     try {
       final uid = auth.currentUser?.uid;
@@ -88,7 +86,6 @@ class HomeController extends GetxController {
         List<KendaraanModel> availableVehicles = [];
         List<KendaraanModel> unavailableVehicles = [];
 
-        // Cek ketersediaan kendaraan
         for (var vehicle in allVehicles) {
           bool available = await isVehicleAvailable(
             vehicle.key!, 
@@ -125,23 +122,29 @@ class HomeController extends GetxController {
       final data = Map<String, dynamic>.from(snapshot.value as Map);
       for (var entry in data.entries) {
         final pesanan = Map<String, dynamic>.from(entry.value);
-        DateTime bookingDate = DateTime.parse(pesanan['booking']);
-        DateTime returnDate = DateTime.parse(pesanan['return']);
 
-        // Cek apakah kendaraan yang sama sudah dipesan dalam rentang waktu yang sama
-        if (pesanan['vehicle']['key'] == vehicleKey) {
-          if ((startDate.isBefore(returnDate) && endDate.isAfter(bookingDate)) ||
-              (startDate.isAtSameMomentAs(returnDate)) || 
-              (endDate.isAtSameMomentAs(bookingDate))) {
-            return false;  // Kendaraan sudah dipesan dalam rentang waktu ini
+        // Ambil status pemesanan
+        String? statusPemesanan = pesanan['statusPemesanan'];
+
+        if (statusPemesanan != null) {
+          DateTime bookingDate = DateTime.parse(pesanan['booking']);
+          DateTime returnDate = DateTime.parse(pesanan['return']);
+
+          if (pesanan['vehicle']['key'] == vehicleKey) {
+            // Kendaraan tidak tersedia jika status "Menunggu Konfirmasi" atau "Berlangsung"
+            if (statusPemesanan == "Menunggu Konfirmasi" || statusPemesanan == "Berlangsung" || statusPemesanan == "Diantar" || statusPemesanan == "Menunggu Kendaraan Diambil") {
+              // Cek apakah rentang tanggal bentrok
+              if (!(returnDate.isBefore(startDate) || bookingDate.isAfter(endDate))) {
+                return false; // Tidak valid jika overlap
+              }
+            }
           }
         }
       }
     }
-    return true;  // Kendaraan tersedia
+    return true; // Kendaraan tersedia
   }
 
-  // Filter berdasarkan nama
   void filterByName(String query) {
     if (query.isEmpty) {
       filteredUploads.assignAll(uploads);
@@ -152,7 +155,6 @@ class HomeController extends GetxController {
     }
   }
 
-  // Filter berdasarkan kategori dan merek
   void filterVehicles({String? category, String? brand}) {
     List<KendaraanModel> filteredList = uploads;
 
@@ -291,7 +293,6 @@ class HomeController extends GetxController {
   }
 
   int calculateRentalDays(DateTime startDate, DateTime endDate) {
-    // Menghitung jumlah hari yang dipilih dengan cara mengurangi tanggal akhir dengan tanggal mulai
     final difference = endDate.difference(startDate).inDays;
     return difference;
   }

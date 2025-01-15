@@ -200,7 +200,7 @@ class PembayaranController extends GetxController {
           'buktiPembayaran': cloudinaryUrl ?? 'Tidak Ada',
           'tanggalPesanan': DateTime.now().toIso8601String(),
           'pesananAlamat': pesananData['address'] == '' 
-              ? 'Rental Bandung Intarent' 
+              ? 'Rental Bandung Instarent' 
               : pesananData['address'],          
           'statusPemesanan': 'Menunggu Konfirmasi',
           'fitur': pesananData['items'],

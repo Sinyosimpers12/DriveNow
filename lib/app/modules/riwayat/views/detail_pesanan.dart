@@ -18,6 +18,9 @@ class DetailPesananView extends StatelessWidget {
     final lokasiPengembalian = 'Rental Bandung Instarent';
     final waktuPengambilan = order['booking'];
     final waktuPengembalian = order['return'];
+    final deliveryPersonPhotoUrl = order['fotourl'];
+    final deliveryPersonName = order['namaKaryawan'];
+    final deliveryPersonPhone = order['noHp'];
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -162,11 +165,16 @@ class DetailPesananView extends StatelessWidget {
                   // Lokasi Pengambilan dan Pengembalian
                   _buildLocationSection('Lokasi Pengambilan',  lokasiPengambilan),
                   _buildLocationSection('Lokasi Pengembalian', lokasiPengembalian),
-
-                  const SizedBox(height: 16),
                   
                   // Durasi Sewa
                   _buildDurationSection(controller.formatTanggalDetail(waktuPengambilan), controller.formatTanggalDetail(waktuPengembalian)),
+
+                   const SizedBox(height: 16),
+
+                  // Data Karyawan Pengantar
+                  lokasiPengambilan != 'Rental Bandung Instarent'
+                    ? _buildDeliveryPersonSection(deliveryPersonPhotoUrl, deliveryPersonName, deliveryPersonPhone)
+                    : const SizedBox.shrink(),
                 ],
               ),
             ),
@@ -298,6 +306,45 @@ class DetailPesananView extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+   Widget _buildDeliveryPersonSection(String? photoUrl, String? name, String? phone) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Data Karyawan Pengantar',
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            CircleAvatar(
+              radius: 25,
+              backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
+              child: photoUrl == null ? const Icon(Icons.person, size: 25) : null,
+            ),
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name ?? 'Nama tidak tersedia',
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  phone ?? 'No HP tidak tersedia',
+                  style: GoogleFonts.poppins(color: Colors.grey),
+                ),
+              ],
             ),
           ],
         ),

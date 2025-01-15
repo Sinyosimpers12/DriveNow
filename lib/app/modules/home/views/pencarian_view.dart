@@ -64,7 +64,10 @@ class PencarianView extends GetView<HomeController> {
                 }
 
                 // Gabungkan kendaraan yang tersedia dan tidak tersedia
-                List<dynamic> sortedVehicles = availableVehicles..addAll(unavailableVehicles);
+                List<dynamic> sortedVehicles = [];
+                sortedVehicles.addAll(availableVehicles);
+                sortedVehicles.addAll(controller.unavailableUploads);
+                sortedVehicles.addAll(unavailableVehicles);
 
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -87,7 +90,7 @@ class PencarianView extends GetView<HomeController> {
   }
 
   Widget buildVehicleCard(dynamic vehicle, HomeController homeController) {
-    bool isAvailable = vehicle.status == "Tersedia";
+    bool isAvailable = vehicle.status == "Tersedia" && controller.uploads.contains(vehicle);
 
     return Card(
       color: Colors.white,

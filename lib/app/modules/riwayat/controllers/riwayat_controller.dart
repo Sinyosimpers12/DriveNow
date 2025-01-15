@@ -27,7 +27,7 @@ class RiwayatController extends GetxController {
   }
 
   void onOrderTap(Map order) {
-    Get.to(DetailPesananView(), arguments: order);
+    Get.to(() => DetailPesananView(), arguments: order);
   }
 
   String formatTanggal(String rawDate) {
@@ -51,6 +51,8 @@ class RiwayatController extends GetxController {
   Color getStatusColor(String status) {
     switch (status) {
       case 'Menunggu Konfirmasi':
+        return Colors.cyan;
+      case 'Diantar':
         return Colors.blue;
       case 'Berlangsung':
         return Color(0xFFFFA500);

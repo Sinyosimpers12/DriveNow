@@ -215,7 +215,10 @@ class HomeView extends GetView<HomeController> {
                 }
               }
 
-              List<dynamic> sortedVehicles = availableVehicles..addAll(unavailableVehicles);
+              List<dynamic> sortedVehicles = [];
+              sortedVehicles.addAll(availableVehicles);
+              sortedVehicles.addAll(controller.unavailableUploads);
+              sortedVehicles.addAll(unavailableVehicles);
 
               return GridView.builder(
                 padding: const EdgeInsets.all(8),
@@ -280,7 +283,7 @@ class HomeView extends GetView<HomeController> {
 
 
   Widget buildVehicleCard(dynamic vehicle) {
-    bool isAvailable = vehicle.status == "Tersedia";
+    bool isAvailable = vehicle.status == "Tersedia" && controller.uploads.contains(vehicle);
 
     return GestureDetector(
       onTap: isAvailable
@@ -297,7 +300,7 @@ class HomeView extends GetView<HomeController> {
                 Get.to(() => PesananView(vehicle: vehicle));
               }
             }
-          : null, // GestureDetector tidak akan berfungsi jika kendaraan tidak tersedia
+          : null,
       child: Stack(
         children: [
           Card(
